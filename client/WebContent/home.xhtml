@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+	
+<h:head>
+			<style type="text/css">
+            div.css-section {border: 5px solid green;font-family: georgia,garamond,serif;
+            text-indent: 100px;font-size: 50px;text-shadow: 4px 2px 8px mediumorchid;}
+            p.css-section {font-size:50px;}
+            a.css-section {border: 2px solid blue;font-size: 30px; background-color: yellow;}
+            h.css-section {font-size:40px;}
+        </style>
+        
+        <h:outputScript  name="js/updateloc.js" target="head"/>
+		<h:outputScript name="jsf.js" Library="javax.faces"/>
+			
+		</h:head>
+		
+<body  bgcolor="powderblue" onload="delayed()">
+		<div class="css-section">MAGACEL Mobile Commerce</div>
+		<p class="css-section">Search/Recherche</p>
+        
+        
+        
+		<f:metadata>
+		<f:viewParam name="longitude" value="#{bean.longitude}"/>
+		<f:viewParam name="latitude" value="#{bean.latitude}"/>
+		<f:viewParam name="magacelid" value="#{bean.magacelid}"/>
+		</f:metadata>
+
+		<h:form id="search" enctype="multipart/form-data">
+		
+	
+
+			<h:panelGrid id="lpg" columns="1" >
+				<h:panelGroup>
+				
+					<h:outputText  value="Select a Category" style="font-size: 50px"/>
+				    	<h:selectOneMenu id="menu1" value="#{bean.menu }" style="font-size: 50px">
+				    	<f:selectItems value="#{bean.menues }"/>
+				    	<f:ajax event="change" render="smenu1"/>
+				    	
+				    	
+				    	</h:selectOneMenu>
+				</h:panelGroup>
+			    <h:panelGroup id="smenu1">
+				    	<h:outputText value="Subcategory" style="font-size: 50px"/>
+				    	<h:selectOneMenu id="submenu1" value="#{bean.submenu }" style="font-size: 50px">
+				    	<f:selectItems value="#{bean.submenues }"/>
+				    					    	
+				    	<f:ajax event="change" render="prodtable1"/>
+				    	<f:ajax event="change" render="sponsor1"/>
+				    	</h:selectOneMenu>
+				    </h:panelGroup>
+				 	<h:panelGroup id="pri1">
+				        <h:outputText value="Price $" style="font-size: 50px"/>
+				    	<h:selectOneMenu id="price1" value="#{bean.price }" style="font-size: 50px">
+				    	<f:selectItems value="#{bean.prices }"/>
+				    	<f:ajax event="change" render="prodtable1"/>
+				    	
+				        </h:selectOneMenu>
+				    </h:panelGroup>		
+				   <h:panelGroup id="distance1">
+				        <h:outputText value="Distance Km" style="font-size: 50px"/>
+				        <h:selectOneMenu id="dist1" value="#{bean.dist }" style="font-size: 50px">
+				        <f:selectItems value="#{bean.distances }"/>
+				        <f:ajax event="change" render="prodtable1"/>
+				        </h:selectOneMenu>
+				</h:panelGroup>
+							
+			</h:panelGrid>
+		
+	
+		
+		<h:dataTable id="prodtable1" value="#{bean.displProd}" var="item" border="1" cellpadding="10">
+		<f:facet name="header">
+					<h:outputText value="RESULT LIST" style="font-size: 35px"/>
+				</f:facet>
+		<h:column>
+					<f:facet name="header">
+						<h:outputText value="Links" style="font-size: 25px"/>
+					</f:facet>
+					<h:outputLink style="font-size: 50px" value="http://108.161.133.222:8080/vapp2/gallery.jsp">#{item.prod_pic_id}
+					
+					<f:param name="prod_pic_id" value="#{item.prod_pic_id}"/>
+					</h:outputLink>
+				</h:column>		
+		
+		</h:dataTable>
+		
+		
+		
+		
+		<h:dataTable  id="sponsor1" value="#{bean.dispSponsor}" var="item" border="10">
+		<f:facet name="header">
+		   <h:outputText value="SPONSOR" style="front-size: 35px" />
+		   </f:facet>
+		<h:column>
+		   <h:graphicImage  value="#{item.picture_id}" height="800" width="800"/>
+		</h:column>
+		
+		</h:dataTable>
+		
+		</h:form>
+
+</body>
+</html>
