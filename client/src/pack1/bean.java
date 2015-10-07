@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.ResultSet;
 import com.mysql.jdbc.Statement;
 
@@ -60,6 +61,9 @@ public class bean {
 	private String vsubmenu;
 	private String rsubmenu;
 	private String rmenu;
+	private String rage;
+	private String rgender;
+	
 	private String delprodid;
 	private String acountbal;
 	private String pin_num;
@@ -83,6 +87,10 @@ public class bean {
  	double slatimin ;
  	double slatimax ;
  	private String profid;
+ 	
+ 	private String agenumberAsString;
+ 	
+ 	double newagenum;
  	
 	public String getRec1() {
 		return rec1;
@@ -485,6 +493,7 @@ try {
    // add user profile 	
 try {
 	if (profid == null){
+		
 	
 		try{
 			String sql821= "insert into profile (magacel_id)values (?)";
@@ -510,7 +519,7 @@ try {
     System.out.println(ex.getMessage());
 }
    
-// setup age and gender
+// find age and gender
 try {
 	
 	String query551 = "SELECT * FROM profile WHERE magacel_id='"+magacelid+"'";
@@ -647,18 +656,18 @@ if (agenum == 0){
 	}
     
     //Display and delete products
+    
+    //
     public List getdisplProd(){
     
     	
-    	ArrayList  displProd = new ArrayList();
+    ArrayList  displProd = new ArrayList();
     	String query119 = "select * from sub_menu where sub_menu_id = '" +submenu +"'";
     	String query120 = "select * from price where price_id = '" +price +"'";
     	String query121 = "select * from distance where distance_id = '" +dist +"'";
     	String sql12= "insert into request (prod_menu,prod_submenu,prod_price,prod_longitude,prod_latitude,prod_distance,magacel_id)values (?,?,?,?,?,?,?)";
     	
-     	
-     	
-     	
+    	
     	
     	try {
     		Class.forName(driver).newInstance();
@@ -668,6 +677,9 @@ if (agenum == 0){
                 rs.next();
                 rsubmenu = rs.getString(3);
     		    rmenu = rs.getString(4);
+    		    rage = rs.getString(5);
+    		    rgender = rs.getString(6);
+    		    
     		rs.close();
             st.close();
             con.close();
@@ -737,9 +749,170 @@ if (agenum == 0){
      	}
     	if (submenu!=psubmenu){
     		
+    		//update  age and gender profile
+    		try { 
+
+    		String query551 = "SELECT * FROM profile WHERE magacel_id='"+magacelid+"'";
+
+    		Class.forName(driver).newInstance();
+    		con = DriverManager.getConnection(url,userName,password);
+    		st = con.createStatement();
+    		java.sql.ResultSet rs = st.executeQuery(query551);
+    		   rs.next();
+    		   
+    		   profid = rs.getString(1);
+    		   agev = rs.getString(3);
+    		   genv = rs.getString(4);
+    		   
+    		         
+    		rs.close();
+    		st.close();
+    		con.close();
+
+    		     }
+    		       catch(Exception ex) {
+    		       System.out.println(ex.getMessage());
+    		        }
+    		// update age   
+
+    		try {
+    		          
+
+
+    		              if (rage.equals("adult")){
+    			
+    			             try {
+    				             int profidValue = Integer.parseInt(profid);
+    				
+    				    	        		
+    				Class.forName(driver).newInstance();
+    				con = DriverManager.getConnection(url,userName,password);
+    				CallableStatement call = con.prepareCall("{call routine5(?)}");
+    				call.setInt(1, profidValue);
+    				
+    				
+    				int update = call.executeUpdate();
+    				System.out.println("Update: "+update);
+    				con.close();
+    		                  	}
+    			                  catch(Exception ex) {
+    		                      System.out.println(ex.getMessage());
+    		                           }
+    		                     }
+
+    		                if (rage.equals("minor")){
+    		                	 try {
+        				             int profidValue = Integer.parseInt(profid);
+        				
+        				    	        		
+        				Class.forName(driver).newInstance();
+        				con = DriverManager.getConnection(url,userName,password);
+        				CallableStatement call = con.prepareCall("{call routine7(?)}");
+        				call.setInt(1, profidValue);
+        				
+        				
+        				int update = call.executeUpdate();
+        				System.out.println("Update: "+update);
+        				con.close();
+        		                  	}
+        			                  catch(Exception ex) {
+        		                      System.out.println(ex.getMessage());
+        		                           }
+    		                	
+
+    		                         
+    		                          }
+
+    		                     if (rage.equals("neutral")){
+
+    		                        
+
+
+    		                          }
+
+
+
+    		          }
+    		          catch(Exception ex) {
+    		              System.out.println(ex.getMessage());
+    		              }
+    		//end update age  profile  
+
+    	// update gender profile
+    		
+    		
+    		
+    		   
+
+    		try {
+    		           
+
+
+    		              if (rgender.equals("male")){
+    			
+    			             try {
+    				             int profidValue = Integer.parseInt(profid);
+    				
+    				    	        		
+    				Class.forName(driver).newInstance();
+    				con = DriverManager.getConnection(url,userName,password);
+    				CallableStatement call = con.prepareCall("{call routine6(?)}");
+    				call.setInt(1, profidValue);
+    				
+    				
+    				int update = call.executeUpdate();
+    				System.out.println("Update: "+update);
+    				con.close();
+    		                  	}
+    			                  catch(Exception ex) {
+    		                      System.out.println(ex.getMessage());
+    		                           }
+    		                     }
+
+    		                if (rgender.equals("female")){
+    		                	
+    		                	try {
+       				             int profidValue = Integer.parseInt(profid);
+       				
+       				    	        		
+       				Class.forName(driver).newInstance();
+       				con = DriverManager.getConnection(url,userName,password);
+       				CallableStatement call = con.prepareCall("{call routine8(?)}");
+       				call.setInt(1, profidValue);
+       				
+       				
+       				int update = call.executeUpdate();
+       				System.out.println("Update: "+update);
+       				con.close();
+       		                  	}
+       			                  catch(Exception ex) {
+       		                      System.out.println(ex.getMessage());
+       		                           }
+
+    		                         
+    		                          }
+
+    		                 if (rgender.equals("neutral")){
+
+    		                       
+
+
+    		                          }
+
+
+
+    		          }
+    		          catch(Exception ex) {
+    		              System.out.println(ex.getMessage());
+    		              }
+    		//end update gender  profile  
+
+
     		
     	
     	try{
+    		
+    		
     		psubmenu=submenu;
     		pmenu=menu;
     		Class.forName(driver).newInstance();
@@ -792,9 +965,8 @@ if (agenum == 0){
     	
 if (dist!=pdist){
     		
-    		
-        	
-        	try{
+	        	
+    try{
         		pdist=dist;
         		pmenu=menu;
         		Class.forName(driver).newInstance();
@@ -816,12 +988,16 @@ if (dist!=pdist){
         	}catch(Exception ex) {
         	    System.out.println(ex.getMessage());
         	}
-        	}
+        	
+
     	
+}  
+
+
+
+
     	
-    	
-    	
-    	try {
+ try {
     		
     		
     		
@@ -844,12 +1020,11 @@ if (dist!=pdist){
             
     	}catch(Exception ex) {
             System.out.println(ex.getMessage());
-        }
-    	
-    	
-    	
-    	return displProd;	
-    }
+                               }
+ 	
+    return displProd;	
+}
+    
     
     // Display request
     
