@@ -52,6 +52,7 @@ public class bean {
 	private String genv;
 	
 	private String ageprof;
+	private String genderprof;
 
 	private String accid;
 	private String fileName;
@@ -540,22 +541,38 @@ try {
     con.close();
     
     double agenum = Double.parseDouble(agev);
+    double gendernum = Double.parseDouble(genv);
+    
+    
     
     if (agenum > 0){
     	
     	ageprof = "adult";
     }
     
-if (agenum < 0){
+    if (agenum < 0){
 	ageprof = "minor";
     }
     
-if (agenum == 0){
+    if (agenum == 0){
 	ageprof = "neutral";
+     }
+    
+    if (gendernum > 0){
+    genderprof = "male";
+    	
+    }
+    if (gendernum < 0){
+	genderprof = "female";
+    	
+    }
+    if (gendernum == 0){
 	
-	
+	genderprof = "neutral";
 	
 }
+    
+    
     
         }
          catch(Exception ex) {
@@ -569,21 +586,33 @@ if (agenum == 0){
     	//Find sponsor
     	try {
 
-
+          if(genderprof.equals("neutral")){
     		 
-    		if (ageprof.equals("neutral")){
+    		    if (ageprof.equals("neutral")){
     			
-    			 query55 = "SELECT sponsor.*,account.account_id,account.account_balance FROM sponsor,account WHERE sponsor.account_id=account.account_id AND account.account_balance>0 AND( '"+latitude+"'+ 0.11) > s_latitude AND ( '"+latitude+"'- 0.11) < s_latitude AND ( '"+longitude+"'+ 0.11) > s_longitude AND ( '"+longitude+"'- 0.11) < s_longitude ORDER BY date_time ASC LIMIT 1 ";
-    		}else{
+    			  query55 = "SELECT sponsor.*,account.account_id,account.account_balance FROM sponsor,account WHERE sponsor.account_id=account.account_id AND account.account_balance>0 AND( '"+latitude+"'+ 0.11) > s_latitude AND ( '"+latitude+"'- 0.11) < s_latitude AND ( '"+longitude+"'+ 0.11) > s_longitude AND ( '"+longitude+"'- 0.11) < s_longitude ORDER BY date_time ASC LIMIT 1 ";
+    		   }else{
 			
     		    			
     			 query55 = "SELECT sponsor.*,account.account_id,account.account_balance FROM sponsor,account WHERE sponsor.account_id=account.account_id AND account.account_balance>0 AND( '"+latitude+"'+ 0.11) > s_latitude AND ( '"+latitude+"'- 0.11) < s_latitude AND ( '"+longitude+"'+ 0.11) > s_longitude AND ( '"+longitude+"'- 0.11) < s_longitude AND (( s_age = '"+ageprof+" ')OR (s_age = 'neutral')) ORDER BY date_time ASC LIMIT 1 ";
-    		}
+    		   }
     	//	String query55 = "SELECT sponsor.*,account.account_id,account.account_balance FROM sponsor,account WHERE sponsor.account_id=account.account_id AND account.account_balance>0 AND( '"+latitude+"'+ 0.11) > s_latitude AND ( '"+latitude+"'- 0.11) < s_latitude AND ( '"+longitude+"'+ 0.11) > s_longitude AND ( '"+longitude+"'- 0.11) < s_longitude ORDER BY date_time ASC LIMIT 1 ";
     		
     		
     	//	String query55 = "SELECT sponsor.*,account.account_id,account.account_balance FROM sponsor,account WHERE sponsor.account_id=account.account_id AND account.account_balance>0 AND( '"+latitude+"'+ 0.11) > s_latitude AND ( '"+latitude+"'- 0.11) < s_latitude AND ( '"+longitude+"'+ 0.11) > s_longitude AND ( '"+longitude+"'- 0.11) < s_longitude AND (( s_age = '"+ageprof+" ')OR (s_age = 'neutral')) ORDER BY date_time ASC LIMIT 1 ";
-			 
+          }	else {
+        	  
+        	  if (ageprof.equals("neutral")){
+      			
+    			  query55 = "SELECT sponsor.*,account.account_id,account.account_balance FROM sponsor,account WHERE sponsor.account_id=account.account_id AND account.account_balance>0 AND( '"+latitude+"'+ 0.11) > s_latitude AND ( '"+latitude+"'- 0.11) < s_latitude AND ( '"+longitude+"'+ 0.11) > s_longitude AND ( '"+longitude+"'- 0.11) < s_longitude AND (s_gender = '"+genderprof+"') ORDER BY date_time ASC LIMIT 1 ";
+    		   }else{
+			
+    		    			
+    			 query55 = "SELECT sponsor.*,account.account_id,account.account_balance FROM sponsor,account WHERE sponsor.account_id=account.account_id AND account.account_balance>0 AND( '"+latitude+"'+ 0.11) > s_latitude AND ( '"+latitude+"'- 0.11) < s_latitude AND ( '"+longitude+"'+ 0.11) > s_longitude AND ( '"+longitude+"'- 0.11) < s_longitude AND (( s_age = '"+ageprof+" ')OR (s_age = 'neutral'))AND ((s_gender = '"+genderprof+"')OR (s_gender = 'neutral')) ORDER BY date_time ASC LIMIT 1 ";
+    		   }
+        	  
+          }
+          
 			Class.forName(driver).newInstance();
 			con = DriverManager.getConnection(url,userName,password);
 			st = con.createStatement();
