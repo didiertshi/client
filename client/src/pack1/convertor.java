@@ -93,8 +93,8 @@ public class convertor {
 	java.sql.Connection con = null;
 	String url = "jdbc:mysql://localhost:3306/vex";
 	String driver ="com.mysql.jdbc.Driver";
-	String userName ="root";
-	String password="admin";
+	String userName ="enfant1";
+	String password="!Muepu$2016!";
 	int sumcount =0;
 	
 	java.sql.Statement st;
